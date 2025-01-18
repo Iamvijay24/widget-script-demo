@@ -10,7 +10,7 @@ To use this Widget, you will need to add the following script to your main `.htm
 
 ```bash
 Full version:
-https://cdn.jsdelivr.net/gh/Iamvijay24/widget-script-demo/widget.min.js
+https://cdn.jsdelivr.net/gh/Iamvijay24/widget-script-demo/widget.js
 
 Minify version:
 https://cdn.jsdelivr.net/gh/Iamvijay24/widget-script-demo/widget.min.js
