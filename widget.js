@@ -6,11 +6,11 @@
 
     const videoJSLink = document.createElement("link");
     videoJSLink.rel = "stylesheet";
-    videoJSLink.href = "https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.css"; // Correct Video.js CSS
+    videoJSLink.href = "https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.css";
     document.head.appendChild(videoJSLink);
 
     const videoJSScript = document.createElement("script");
-    videoJSScript.src = "https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.js"; // Correct Video.js JS
+    videoJSScript.src = "https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.js";
     document.head.appendChild(videoJSScript);
 
     videoJSScript.onload = function () {
@@ -27,6 +27,9 @@
                 ].map(video => videoBasePath + video),
             };
 
+            let bg_color = "indigo-600";
+            let title = "FaceBot Assistant";
+            
             const createWidget = () => {
                 const chatButton = document.createElement("div");
                 chatButton.className = "fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full shadow-lg cursor-pointer flex items-center justify-center animate-bounce";
@@ -37,8 +40,8 @@
                 chatContainer.className = "fixed bottom-24 right-10 z-50 w-96 bg-white border border-gray-300 rounded-lg shadow-lg";
 
                 chatContainer.innerHTML = `
-            <div class="flex justify-between items-center p-4 bg-indigo-600 text-white rounded-t-lg">
-              <h5>FaceBot Assistant</h5>
+            <div class="flex justify-between items-center p-4 bg-[${bg_color}] text-white rounded-t-lg">
+              <h5>${title}</h5>
               <button id="closeChat" class="text-white">X</button>
             </div>
             <div class="p-4 space-y-2 h-96">
@@ -113,11 +116,3 @@
         });
     };
 })();
-
-
-
-
-// ************ Widget Link **********************
-// // https://rawcdn.githack.com/Iamvijay24/widget-script-demo/refs/heads/main/widget.js
-
-
