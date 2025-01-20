@@ -122,7 +122,7 @@
 
                 const videoPlayer = videojs('videoPlayer', {
                     autoplay: true,
-                    controls: true,
+                    controls: false,
                     preload: 'auto',
                     sources: [{
                         src: defaultVideos[0],
