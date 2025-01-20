@@ -1,6 +1,6 @@
 {
   "name": "script_loader_demo",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "demo",
   "main": "widget.js",
   "scripts": {
