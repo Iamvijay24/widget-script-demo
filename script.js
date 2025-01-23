@@ -129,7 +129,7 @@ videoPlayer.on('ended', () => {
 
             const data = await response.json();
 
-            if (data.data.answer_type === "success") {
+            if (data.data) {
               const videoUrl = videoBasePath + data.data.answer_video_url;
               videoPlayer.src({ type: "application/x-mpegURL", src: videoUrl });
               videoPlayer.ready(() => {
@@ -140,6 +140,8 @@ videoPlayer.on('ended', () => {
             } else {
               alert("No video found for the given search term.");
             }
+
+            document.getElementById("userInput").value = '';
           } catch (error) {
             console.error("Error fetching video:", error);
             alert("An error occurred while fetching the video.");
