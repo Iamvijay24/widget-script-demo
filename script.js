@@ -99,7 +99,6 @@ videoPlayer.on('ended', () => {
       src: "https://feedio-ai.s3.us-east-1.amazonaws.com/videos/media-facebot/default/default_playlist.m3u8", // Default video
   });
   videoPlayer.play().catch((error) => {
-    console.error("Error playing the default video:", error);
   });
   videoPlayer.loop(true);
 });
@@ -134,8 +133,8 @@ videoPlayer.on('ended', () => {
               videoPlayer.src({ type: "application/x-mpegURL", src: videoUrl });
               videoPlayer.ready(() => {
                 videoPlayer.play().catch((error) => {
-                  console.error("Error playing the selected video:", error);
                 });
+                videoPlayer.loop(false);
               });
             } else {
             }
@@ -143,7 +142,6 @@ videoPlayer.on('ended', () => {
             document.getElementById("userInput").value = '';
           } catch (error) {
             console.error("Error fetching video:", error);
-            alert("An error occurred while fetching the video.");
           }
         };
 
