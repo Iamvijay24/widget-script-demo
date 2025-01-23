@@ -86,7 +86,7 @@
   preload: "auto",
   sources: [
     {
-      src: "https://feedio-ai.s3.us-east-1.amazonaws.com/media-2/d1/default-2/default1024_playlist.m3u8", // Default video
+      src: "https://feedio-ai.s3.us-east-1.amazonaws.com/videos/media-facebot/default/default_playlist.m3u8", // Default video
       type: "application/x-mpegURL",
     },
   ],
@@ -96,7 +96,7 @@
 videoPlayer.on('ended', () => {
   videoPlayer.src({
     type: "application/x-mpegURL",
-    src: "https://feedio-ai.s3.us-east-1.amazonaws.com/media-2/d1/default-2/default1024_playlist.m3u8", // Default video
+      src: "https://feedio-ai.s3.us-east-1.amazonaws.com/videos/media-facebot/default/default_playlist.m3u8", // Default video
   });
   videoPlayer.play().catch((error) => {
     console.error("Error playing the default video:", error);
