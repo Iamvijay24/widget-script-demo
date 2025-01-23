@@ -27,7 +27,7 @@
       const createWidget = () => {
         const chatButton = document.createElement("div");
         chatButton.className =
-          "fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full shadow-lg cursor-pointer flex items-center justify-center animate-bounce";
+          "fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full cursor-pointer flex items-center justify-center animate-bounce";
         chatButton.innerHTML = `<img src="https://picsxtra.com/images/2025/01/16/Bot-face-logo.png" alt="Chat Bot" class="w-10 h-10" />`;
 
         const chatContainer = document.createElement("div");
