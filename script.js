@@ -138,7 +138,6 @@ videoPlayer.on('ended', () => {
                 });
               });
             } else {
-              alert("No video found for the given search term.");
             }
 
             document.getElementById("userInput").value = '';
