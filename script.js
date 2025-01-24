@@ -5,12 +5,6 @@
     "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
   document.head.appendChild(tailwindCSSLink);
 
-  const videoJSLink = document.createElement("link");
-  videoJSLink.rel = "stylesheet";
-  videoJSLink.href =
-    "https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.css";
-  document.head.appendChild(videoJSLink);
-
   const videoJSScript = document.createElement("script");
   videoJSScript.src =
     "https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.js";
@@ -22,7 +16,7 @@
         "https://feedio-ai.s3.us-east-1.amazonaws.com/videos/media-facebot/";
 
       let bg_color = `bg-indigo-600`;
-      let title = "FaceBot Assistant";
+      let title = "FaceBot Assistant12";
 
       const createWidget = () => {
         const chatButton = document.createElement("div");
