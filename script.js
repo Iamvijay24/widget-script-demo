@@ -68,7 +68,7 @@
 
       chatContainer.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background-color: ${bgColor}; color: #ffffff; border-top-left-radius: 8px; border-top-right-radius: 8px;">
-            <h5 style="margin: 0;">${title}</h5>
+            <h5 style="margin: 0; font-size: 16px;">${title}</h5>
             <button id="closeChat9f1da41f" aria-label="Close chat" style="background: none; border: none; color: #ffffff; font-size: 16px; cursor: pointer;">X</button>
           </div>
           <div style="padding: 16px; height: 384px; overflow: hidden;">
@@ -81,8 +81,8 @@
           <div style="display: flex; align-items: center; padding: 16px; border-top: 1px solid #E5E7EB; background-color: #F9FAFB; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
             <div style="position: relative; width: 100%;">
               <input id="userInputf5b7889e" type="text" placeholder="Type a message..." 
-                style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #D1D5DB; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); outline: none; padding-right: 80px;">
-              <button id="sendMessage" style="position: absolute; top: 50%; right: 8px; transform: translateY(-50%); background-color: ${bgColor}; color: #ffffff; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;">
+                style="width: 100%; font-size: 14px; padding: 12px; border-radius: 8px; border: 1px solid #D1D5DB; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); outline: none; padding-right: 80px;">
+              <button id="sendMessage" style="position: absolute; font-size: 14px; top: 50%; right: 8px; transform: translateY(-50%); background-color: ${bgColor}; color: #ffffff; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;">
                 Send
               </button>
             </div>
