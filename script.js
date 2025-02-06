@@ -9,13 +9,12 @@
   
   const initializeChatWidget = () => {
     const setupWidget = () => {
-      const fb_partner_id = document.getElementById("fb_widget_script")?.getAttribute("fb_partner_id").value;
+      const fb_partner_id = document.getElementById("fb_widget_script")?.getAttribute("fb_partner_id");
       console.log("Chat widget initialized!");
-      const defaultVideoURL = "https://feedio-ai.s3.us-east-1.amazonaws.com/videos/media-facebot/default/default_playlist.m3u8";
+      const defaultVideoURL = `https://facebot-videos.s3.us-west-2.amazonaws.com/${fb_partner_id}/videos/knowledge_base/default/1_playlist.m3u8'`;
       let bgColor = "#4F46E5";
       let title = "FaceBot Assistant";
 
-console.log("fb_partner_id", fb_partner_id);
 
       const chatButton = document.createElement("div");
       chatButton.setAttribute("aria-label", "Open chat");
@@ -162,7 +161,7 @@ console.log("fb_partner_id", fb_partner_id);
                   const response = await fetch("https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ audioMessage: base64Audio, action: "get_answer_for_voice", partner_id: "facebot" })
+                    body: JSON.stringify({ audioMessage: base64Audio, action: "get_answer_for_voice", partner_id: fb_partner_id })
                   });
 
                   const data = await response.json();
@@ -256,7 +255,7 @@ console.log("fb_partner_id", fb_partner_id);
               body: JSON.stringify({
                 question: searchTerm,
                 action: "get_answer",
-                partner_id: "ee305956fc",
+                partner_id: fb_partner_id,
               }),
             }
           );
