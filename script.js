@@ -11,7 +11,7 @@
     const setupWidget = () => {
       const fb_partner_id = document.getElementById("fb_widget_script")?.getAttribute("fb_partner_id");
       console.log("Chat widget initialized!");
-      const defaultVideoURL = `https://facebot-videos.s3.us-west-2.amazonaws.com/${fb_partner_id}/videos/knowledge_base/default/1_playlist.m3u8'`;
+      const defaultVideoURL = `https://facebot-videos.s3.us-west-2.amazonaws.com/${fb_partner_id}/videos/knowledge_base/default/1_playlist.m3u8`;
       let bgColor = "#4F46E5";
       let title = "FaceBot Assistant";
 
