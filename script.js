@@ -6,10 +6,10 @@
     document.head.appendChild(videoJSScript);
   };
 
-  const fb_partner_id = document.getElementById("fb_widget_script")?.getAttribute("fb_partner_id").value;
-
+  
   const initializeChatWidget = () => {
     const setupWidget = () => {
+      const fb_partner_id = document.getElementById("fb_widget_script")?.getAttribute("fb_partner_id").value;
       console.log("Chat widget initialized!");
       const defaultVideoURL = "https://feedio-ai.s3.us-east-1.amazonaws.com/videos/media-facebot/default/default_playlist.m3u8";
       let bgColor = "#4F46E5";
