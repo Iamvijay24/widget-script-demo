@@ -6,6 +6,8 @@
     document.head.appendChild(videoJSScript);
   };
 
+  const fb_partner_id = document.getElementById("fb_widget_script")?.getAttribute("fb_partner_id").value;
+
   const initializeChatWidget = () => {
     const setupWidget = () => {
       console.log("Chat widget initialized!");
@@ -13,7 +15,7 @@
       let bgColor = "#4F46E5";
       let title = "FaceBot Assistant";
 
-
+console.log("fb_partner_id", fb_partner_id);
 
       const chatButton = document.createElement("div");
       chatButton.setAttribute("aria-label", "Open chat");
