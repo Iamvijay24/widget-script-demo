@@ -454,10 +454,10 @@ Send
           try {
              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-    // Initialize MediaRecorder with 'audio/wav'
+    // Initialize MediaRecorder with 'audio/mp4'
     const mimeType = 'audio/mp4';
     if (!MediaRecorder.isTypeSupported(mimeType)) {
-      alert('WAV format not supported');
+      alert('mp4 format not supported');
       return;
     }
 
