@@ -470,7 +470,7 @@ Send
     };
 
     mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+      const audioBlob = new Blob(audioChunks, { type: 'audio/mp4' });
 
       // Debug: Check if the blob is empty or null
       if (!audioBlob.size) {
