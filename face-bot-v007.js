@@ -364,7 +364,7 @@ Send
             const userId = getCookie("fb_user_id");
 
             const response = await fetch(
-              "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
+              "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -470,7 +470,7 @@ Send
 
                 try {
                   const response = await fetch(
-                    "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
+                    "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
@@ -630,7 +630,7 @@ Send
 
         try {
           const response = await fetch(
-            "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
+            "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
