@@ -454,10 +454,10 @@ Send
           try {
              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-    // Initialize MediaRecorder with 'audio/mpeg'
-    const mimeType = 'audio/mpeg';
+    // Initialize MediaRecorder with 'audio/mp4'
+    const mimeType = 'audio/mp4';
     if (!MediaRecorder.isTypeSupported(mimeType)) {
-      alert('Mpeg format not supported');
+      alert('mp4 format not supported');
       return;
     }
 
@@ -470,11 +470,11 @@ Send
     };
 
     mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+      const audioBlob = new Blob(audioChunks, { type: 'audio/mp4' });
 
       // Debug: Check if the blob is empty or null
       if (!audioBlob.size) {
-        alert('New MPEG Audio Blob is empty!');
+        alert('New MP4 Audio Blob is empty!');
         return;
       }
 
