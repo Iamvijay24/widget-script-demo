@@ -452,29 +452,41 @@ Send
         if (!isRecording) {
 
           try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
+    // Initialize MediaRecorder with 'audio/wav'
+    const mimeType = 'audio/wav';
+    if (!MediaRecorder.isTypeSupported(mimeType)) {
+      alert('WAV format not supported');
+      return;
+    }
 
-            mediaRecorder.ondataavailable = (event) => {
-              audioChunks.push(event.data);
-            };
+    mediaRecorder = new MediaRecorder(stream, { mimeType });
+    audioChunks = [];
 
-            mediaRecorder.onstop = async () => {
-              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+    mediaRecorder.ondataavailable = (event) => {
+      // Collect audio data chunks
+      audioChunks.push(event.data);
+    };
 
-              // Debug: Check if the blob is empty or null
-              if (!audioBlob.size) {
-                alert('Audio Blob is empty!');
-                return;
-              }
+    mediaRecorder.onstop = async () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
 
-              const reader = new FileReader();
+      // Debug: Check if the blob is empty or null
+      if (!audioBlob.size) {
+        alert('Audio Blob is empty!');
+        return;
+      }
+
+      const reader = new FileReader();
 
               // Handle read as DataURL (base64 encoding)
               reader.onloadend = async () => {
                 const base64Audio = reader.result.split(",")[1];
+                if(!base64Audio){
+                  alert("Base64 encoded problem")
+                 return;
+                }
 
                 try {
                   const response = await fetch(
