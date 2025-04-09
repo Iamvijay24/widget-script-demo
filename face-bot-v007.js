@@ -480,7 +480,7 @@ Send
               const audioBlob = new Blob(audioChunks, { type: blobType });
 
               if (!audioBlob.size) {
-                alert('Audio Blob is empty!');
+                alert('New Audio Blob is empty!', audioBlob.size, audioBlob);
                 return;
               }
 
@@ -491,7 +491,7 @@ Send
               reader.onloadend = async () => {
                 const base64Audio = reader.result.split(",")[1];
                 if (!base64Audio) {
-                  alert("Base64 encoded problem")
+                  alert("New Base64 encoded problem")
                   return;
                 }
 
