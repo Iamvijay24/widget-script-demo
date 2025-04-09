@@ -472,6 +472,8 @@ Send
             audioChunks = [];
 
             mediaRecorder.ondataavailable = (event) => {
+            
+                alert('audioChunks Push', event.data);
               audioChunks.push(event.data);
             };
 
@@ -480,7 +482,7 @@ Send
               const audioBlob = new Blob(audioChunks, { type: blobType });
 
               if (!audioBlob.size) {
-                alert('New Audio Blob is empty!', audioBlob.size, audioBlob);
+                alert('New1 Audio Blob is empty!', audioBlob.size, audioChunks);
                 return;
               }
 
@@ -491,7 +493,7 @@ Send
               reader.onloadend = async () => {
                 const base64Audio = reader.result.split(",")[1];
                 if (!base64Audio) {
-                  alert("New Base64 encoded problem")
+                  alert("New1 Base64 encoded problem")
                   return;
                 }
 
