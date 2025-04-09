@@ -462,9 +462,17 @@ Send
             };
 
             mediaRecorder.onstop = async () => {
-              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' }); // Keep type consistent
+              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+              // Debug: Check if the blob is empty or null
+              if (!audioBlob.size) {
+                alert('Audio Blob is empty!');
+                return;
+              }
+
               const reader = new FileReader();
 
+              // Handle read as DataURL (base64 encoding)
               reader.onloadend = async () => {
                 const base64Audio = reader.result.split(",")[1];
 
