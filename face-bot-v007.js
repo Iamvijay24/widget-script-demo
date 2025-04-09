@@ -450,42 +450,49 @@ Send
 
 
         if (!isRecording) {
-
           try {
-             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-    // Initialize MediaRecorder with 'audio/mp4'
-    const mimeType = 'audio/mp4';
-    if (!MediaRecorder.isTypeSupported(mimeType)) {
-      alert('mp4 format not supported');
-      return;
-    }
+            // Check supported MIME types in order
+            const preferredTypes = ['audio/mp4', 'audio/webm', 'audio/webm;codecs=opus'];
+            let mimeType = '';
 
-    mediaRecorder = new MediaRecorder(stream, { mimeType });
-    audioChunks = [];
+            for (const type of preferredTypes) {
+              if (MediaRecorder.isTypeSupported(type)) {
+                mimeType = type;
+                break;
+              }
+            }
 
-    mediaRecorder.ondataavailable = (event) => {
-      // Collect audio data chunks
-      audioChunks.push(event.data);
-    };
+            // Create MediaRecorder with supported mimeType or without it
+            mediaRecorder = mimeType
+              ? new MediaRecorder(stream, { mimeType })
+              : new MediaRecorder(stream); // fallback for Safari/iOS
 
-    mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/mp4' });
+            audioChunks = [];
 
-      // Debug: Check if the blob is empty or null
-      if (!audioBlob.size) {
-        alert('New MP4 Audio Blob is empty!');
-        return;
-      }
+            mediaRecorder.ondataavailable = (event) => {
+              audioChunks.push(event.data);
+            };
 
-      const reader = new FileReader();
+            mediaRecorder.onstop = async () => {
+              const blobType = mimeType || 'audio/webm';
+              const audioBlob = new Blob(audioChunks, { type: blobType });
+
+              if (!audioBlob.size) {
+                alert('Audio Blob is empty!');
+                return;
+              }
+
+              const reader = new FileReader();
+              reader.readAsDataURL(audioBlob);
 
               // Handle read as DataURL (base64 encoding)
               reader.onloadend = async () => {
                 const base64Audio = reader.result.split(",")[1];
-                if(!base64Audio){
+                if (!base64Audio) {
                   alert("Base64 encoded problem")
-                 return;
+                  return;
                 }
 
                 try {
