@@ -364,7 +364,7 @@ Send
             const userId = getCookie("fb_user_id");
 
             const response = await fetch(
-              "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
+              "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -441,63 +441,36 @@ Send
       });
 
       let isRecording = false;
-  let mediaRecorder;
-  let audioChunks = [];
+      let mediaRecorder;
+      let audioChunks = [];
 
-  function isIOS() {
-    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  }
+      sendVoice.addEventListener("click", async () => {
+        const userId = getCookie("fb_user_id");
+        const sessionId = sessionStorage.getItem('fb_session_id');
 
-  function getCookie(name) {
-    const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-    return match ? match[2] : null;
-  }
 
-  sendVoice.addEventListener("click", async () => {
-    const userId = getCookie("fb_user_id");
-    const sessionId = sessionStorage.getItem("fb_session_id");
+        if (!isRecording) {
 
-    if (typeof MediaRecorder === "undefined") {
-      alert("Media recording is not supported on this browser.");
-      return;
-    }
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-    if (isIOS()) {
-      alert("Voice recording is not supported on iOS.");
-    }
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
 
-    if (!isRecording) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder.ondataavailable = (event) => {
+              audioChunks.push(event.data);
+            };
 
-        // MIME type fallback strategy
-        let options = { mimeType: "audio/webm" };
-        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-          options.mimeType = "audio/wav";
-        }
-        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-          delete options.mimeType;
-        }
+            mediaRecorder.onstop = async () => {
+              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' }); // Keep type consistent
+              const reader = new FileReader();
 
-        mediaRecorder = new MediaRecorder(stream, options);
-        audioChunks = [];
-
-        mediaRecorder.ondataavailable = (event) => {
-          if (event.data.size > 0) {
-            audioChunks.push(event.data);
-          }
-        };
-
-        mediaRecorder.onstop = async () => {
-          const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
-          const reader = new FileReader();
-
-          reader.onloadend = async () => {
-            const base64Audio = reader.result.split(",")[1];
+              reader.onloadend = async () => {
+                const base64Audio = reader.result.split(",")[1];
 
                 try {
                   const response = await fetch(
-                    "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
+                    "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
@@ -657,7 +630,7 @@ Send
 
         try {
           const response = await fetch(
-            "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
+            "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
