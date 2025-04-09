@@ -364,7 +364,7 @@ Send
             const userId = getCookie("fb_user_id");
 
             const response = await fetch(
-              "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
+              "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -463,7 +463,7 @@ Send
     }
 
     if (isIOS()) {
-      alert("Voice recording on iOS Safari is limited. If it doesn't work, please try Chrome or another browser.");
+      alert("Voice recording is not supported on iOS.");
     }
 
     if (!isRecording) {
@@ -473,7 +473,7 @@ Send
         // MIME type fallback strategy
         let options = { mimeType: "audio/webm" };
         if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-          options.mimeType = "audio/mp3";
+          options.mimeType = "audio/wav";
         }
         if (!MediaRecorder.isTypeSupported(options.mimeType)) {
           delete options.mimeType;
@@ -497,7 +497,7 @@ Send
 
                 try {
                   const response = await fetch(
-                    "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
+                    "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
@@ -657,7 +657,7 @@ Send
 
         try {
           const response = await fetch(
-            "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/prod",
+            "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
