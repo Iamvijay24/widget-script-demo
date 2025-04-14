@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Demo page for fusefy</title>
     <!-- src="https://d1jcbfcd9v1do3.cloudfront.net/script/chat_script_v1.js" -->
-    <script
-      id="fb_widget_script"
-      src="./chat_script_v01.js"
-      async
-    ></script>
+    <script id="fb_widget_script" src="./chat_script_v01.js" async></script>
 
     <style>
       body {
@@ -46,7 +42,7 @@
 
       /* Button Styling */
       #open-widget {
-        background-color: #0021F3; /* Fusefy Blue */
+        background-color: #0021f3; /* Fusefy Blue */
         color: #fff;
         font-family: "Roboto", sans-serif;
         padding: 12px 24px;
@@ -61,12 +57,12 @@
       }
 
       #open-widget:hover {
-        background-color: #0021F3;
+        background-color: #0021f3;
       }
 
       #open-widget:focus {
         outline: none;
-        box-shadow: 0 0 0 2px #0021F3;
+        box-shadow: 0 0 0 2px #0021f3;
       }
     </style>
   </head>
@@ -84,12 +80,12 @@
 
   <script>
     const token =
-      "old.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30";
+      "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZvcmdlL2NvbnRleHQtdG9rZW4vMDQ4MTY3Y2QtYzFiMi00MjQ0LThhYzktMWFjZmYzOGI4OGM4In0.eyJjb250ZXh0Ijp7ImNsb3VkSWQiOiIwZTMwMjgyOS01MTAyLTQ0ZDctOGI5NC00YzNlNzMzYjkzMDEiLCJsb2NhbElkIjoiYXJpOmNsb3VkOmVjb3N5c3RlbTo6ZXh0ZW5zaW9uLzFlOTNlMzk0LTg1NDctNGFiYS04MjZlLTY3YTVjOGM2NDA5Yy9lNzU1YzVkMC02MTEwLTRkMTAtYTcxNC0xM2E5ZDE2YjkyOWEvc3RhdGljL2FpLWFtb3IiLCJlbnZpcm9ubWVudElkIjoiZTc1NWM1ZDAtNjExMC00ZDEwLWE3MTQtMTNhOWQxNmI5MjlhIiwiZW52aXJvbm1lbnRUeXBlIjoiREVWRUxPUE1FTlQiLCJtb2R1bGVLZXkiOiJhaS1hbW9yIiwic2l0ZVVybCI6Imh0dHBzOi8vZmFjZWJvdC1mdXNlZnkuYXRsYXNzaWFuLm5ldCIsImV4dGVuc2lvbiI6eyJ0eXBlIjoiamlyYTpnbG9iYWxQYWdlIiwiamlyYSI6eyJpc05ld05hdmlnYXRpb24iOnRydWV9fX0sImFjY291bnRJZCI6IjcxMjAyMDowOTQyMjdiZS0zMzhlLTQwYjYtYjJhMi1jMzI1MzhjODAyYWIiLCJleHRlbnNpb25JZCI6ImFyaTpjbG91ZDplY29zeXN0ZW06OmV4dGVuc2lvbi8xZTkzZTM5NC04NTQ3LTRhYmEtODI2ZS02N2E1YzhjNjQwOWMvZTc1NWM1ZDAtNjExMC00ZDEwLWE3MTQtMTNhOWQxNmI5MjlhL3N0YXRpYy9haS1hbW9yIiwiY29udGV4dElkcyI6WyJhcmk6Y2xvdWQ6amlyYTowZTMwMjgyOS01MTAyLTQ0ZDctOGI5NC00YzNlNzMzYjkzMDE6d29ya3NwYWNlL2U1NDk2MWQ3LTk2MzAtNGY1YS04MmI3LTcwMzViNGQ5ZDY2NiJdLCJhcHBJZCI6IjFlOTNlMzk0LTg1NDctNGFiYS04MjZlLTY3YTVjOGM2NDA5YyIsImFwcFZlcnNpb24iOiIyLjcuMCIsImV4dGVuc2lvblR5cGUiOiJqaXJhOmdsb2JhbFBhZ2UiLCJ1bmxpY2Vuc2VkIjpmYWxzZSwiaXNzIjoiZm9yZ2UvY29udGV4dC10b2tlbiIsImF1ZCI6ImZvcmdlIiwiaWF0IjoxNzQ0NjEwMTk0LCJuYmYiOjE3NDQ2MTAxOTQsImV4cCI6MTc0NDYxMTA5NCwianRpIjoiNDNlNTg1OGJjZmVlNTY0ZDQxMWJiYzJjMjVhMDQ0YzZkMjY5ZjEzMyJ9.IYGnzraCY5i-X0IuyWckxdP8-Q_xj0lfzIpU7xAZqieeDgk1ELiHhOROgGx3BSXr-FftphNlQSs-QY5rWlCbOsJGKvKDvVaH-TEAgPIHA1otPm-Mkv2fwKSCTp5QTAeE427983qmw-nhhPHmjkvSKUA3sM9yUChRJCwcz7Uh1PM08zpuC74zayjtT87iaMszMgPZJLmdwhDh_cEjb6hm-opt0EQCYnexJh2baHLbcQ7qvRIr5eW065iTmxG87ciYjlFq3sZCEh-ChRfNMDPJv8GnlkObK9JFNlhkp_588OuvSPVTS-viMccsUH7Fgjx7Tn-9vOF2j-tM59dqCSGeyA";
 
     const newToken =
-      "new.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30";
+      "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZvcmdlL2NvbnRleHQtdG9rZW4vMDQ4MTY3Y2QtYzFiMi00MjQ0LThhYzktMWFjZmYzOGI4OGM4In0.eyJjb250ZXh0Ijp7ImNsb3VkSWQiOiIwZTMwMjgyOS01MTAyLTQ0ZDctOGI5NC00YzNlNzMzYjkzMDEiLCJsb2NhbElkIjoiYXJpOmNsb3VkOmVjb3N5c3RlbTo6ZXh0ZW5zaW9uLzFlOTNlMzk0LTg1NDctNGFiYS04MjZlLTY3YTVjOGM2NDA5Yy9lNzU1YzVkMC02MTEwLTRkMTAtYTcxNC0xM2E5ZDE2YjkyOWEvc3RhdGljL2FpLWFtb3IiLCJlbnZpcm9ubWVudElkIjoiZTc1NWM1ZDAtNjExMC00ZDEwLWE3MTQtMTNhOWQxNmI5MjlhIiwiZW52aXJvbm1lbnRUeXBlIjoiREVWRUxPUE1FTlQiLCJtb2R1bGVLZXkiOiJhaS1hbW9yIiwic2l0ZVVybCI6Imh0dHBzOi8vZmFjZWJvdC1mdXNlZnkuYXRsYXNzaWFuLm5ldCIsImV4dGVuc2lvbiI6eyJ0eXBlIjoiamlyYTpnbG9iYWxQYWdlIiwiamlyYSI6eyJpc05ld05hdmlnYXRpb24iOnRydWV9fX0sImFjY291bnRJZCI6IjcxMjAyMDowOTQyMjdiZS0zMzhlLTQwYjYtYjJhMi1jMzI1MzhjODAyYWIiLCJleHRlbnNpb25JZCI6ImFyaTpjbG91ZDplY29zeXN0ZW06OmV4dGVuc2lvbi8xZTkzZTM5NC04NTQ3LTRhYmEtODI2ZS02N2E1YzhjNjQwOWMvZTc1NWM1ZDAtNjExMC00ZDEwLWE3MTQtMTNhOWQxNmI5MjlhL3N0YXRpYy9haS1hbW9yIiwiY29udGV4dElkcyI6WyJhcmk6Y2xvdWQ6amlyYTowZTMwMjgyOS01MTAyLTQ0ZDctOGI5NC00YzNlNzMzYjkzMDE6d29ya3NwYWNlL2U1NDk2MWQ3LTk2MzAtNGY1YS04MmI3LTcwMzViNGQ5ZDY2NiJdLCJhcHBJZCI6IjFlOTNlMzk0LTg1NDctNGFiYS04MjZlLTY3YTVjOGM2NDA5YyIsImFwcFZlcnNpb24iOiIyLjcuMCIsImV4dGVuc2lvblR5cGUiOiJqaXJhOmdsb2JhbFBhZ2UiLCJ1bmxpY2Vuc2VkIjpmYWxzZSwiaXNzIjoiZm9yZ2UvY29udGV4dC10b2tlbiIsImF1ZCI6ImZvcmdlIiwiaWF0IjoxNzQ0NjEwMTk0LCJuYmYiOjE3NDQ2MTAxOTQsImV4cCI6MTc0NDYxMTA5NCwianRpIjoiNDNlNTg1OGJjZmVlNTY0ZDQxMWJiYzJjMjVhMDQ0YzZkMjY5ZjEzMyJ9.IYGnzraCY5i-X0IuyWckxdP8-Q_xj0lfzIpU7xAZqieeDgk1ELiHhOROgGx3BSXr-FftphNlQSs-QY5rWlCbOsJGKvKDvVaH-TEAgPIHA1otPm-Mkv2fwKSCTp5QTAeE427983qmw-nhhPHmjkvSKUA3sM9yUChRJCwcz7Uh1PM08zpuC74zayjtT87iaMszMgPZJLmdwhDh_cEjb6hm-opt0EQCYnexJh2baHLbcQ7qvRIr5eW065iTmxG87ciYjlFq3sZCEh-ChRfNMDPJv8GnlkObK9JFNlhkp_588OuvSPVTS-viMccsUH7Fgjx7Tn-9vOF2j-tM59dqCSGeyA";
 
-      const assessmentId = "SURVEY_001";
+    const assessmentId = "SURVEY_001";
     function openWidget() {
       fbInitializeResources(token, assessmentId);
       setTimeout(() => {
@@ -98,4 +94,3 @@
     }
   </script>
 </html>
-
