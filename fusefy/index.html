@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo page for fusefy</title>
+    <!-- src="https://d1jcbfcd9v1do3.cloudfront.net/script/chat_script_v1.js" -->
+    <script
+      id="fb_widget_script"
+      src="./chat_script_v01.js"
+      async
+    ></script>
+
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+      }
+
+      img {
+        max-width: 400px;
+        height: auto;
+        margin-bottom: 30px; /* Add space between logo and button */
+      }
+
+      h2 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      /* Button Styling */
+      #open-widget {
+        background-color: #0021F3; /* Fusefy Blue */
+        color: #fff;
+        font-family: "Roboto", sans-serif;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: block; /* Make it a block-level element */
+        margin: 0 auto; /* Set left and right margins to auto */
+      }
+
+      #open-widget:hover {
+        background-color: #0021F3;
+      }
+
+      #open-widget:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #0021F3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img
+        src="https://www.fusefy.ai/wp-content/uploads/2024/07/Fusefy-logo-final-03.svg"
+        alt="Fusefy Logo"
+      />
+      <button id="open-widget" onclick="openWidget()">
+        Open Chat Assistant
+      </button>
+    </div>
+  </body>
+
+  <script>
+    const token =
+      "old.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30";
+
+    const newToken =
+      "new.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30";
+
+      const assessmentId = "SURVEY_001";
+    function openWidget() {
+      fbInitializeResources(token, assessmentId);
+      setTimeout(() => {
+        FbPartnerTokenUpdate(newToken);
+      }, 5000);
+    }
+  </script>
+</html>
+
