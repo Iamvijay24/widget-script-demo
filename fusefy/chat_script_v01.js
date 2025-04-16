@@ -34,7 +34,7 @@ const fbInitializeResources = (token, assessmentId) => {
 };
 
 // Function to update the token
-const updatedTokenFn = (newToken) => {
+const fbPartnerTokenUpdate = (newToken) => {
   currentToken = newToken;
 };
 
@@ -168,6 +168,17 @@ const initializeChatWidget = () => {
 
         }
 
+        .chat-message.ai {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .chat-message.ai .message-container {
+          // display: flex;
+          align-items: center;
+        }
+
         .chat-message.user { /* Class for user messages */
             align-self: flex-end; /* Push to the right */
             flex-direction: row-reverse; /* Avatar on the right for user */
@@ -207,6 +218,18 @@ const initializeChatWidget = () => {
           background-color: #034b83;
           color: #ffffff;
         }
+          .skip-button {
+  color: #034b83;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 5px; /* Add spacing between message and button */
+}
+
+.skip-button:hover {
+  color:rgb(2, 56, 97); /* Darker red on hover */
+}
 
 
       `;
@@ -309,13 +332,14 @@ const initializeChatWidget = () => {
     const sendVoice = document.getElementById("fb_sendVoice");
     const micTooltip = document.getElementById("fb_micTooltip");
     const chatMessages = document.getElementById("chatMessages");
+    const messageContainer = document.getElementById("messageContainer");
 
     if (sendVoice) {
       sendVoice.disabled = true;
       sendVoice.style.cursor = "not-allowed";
     }
 
-    const appendMessage = (message, isUser, isLoading = false, answer_type = null) => {
+    const appendMessage = (message, isUser, isLoading = false, response_type = null) => {
       const messageElement = document.createElement("div");
       messageElement.classList.add("chat-message");
       messageElement.classList.add(isUser ? "user" : "ai");
@@ -334,15 +358,49 @@ const initializeChatWidget = () => {
       } else {
         messageContentElement.textContent = message;
       }
-
       // Apply specific style if the answer_type is "end"
-      if (answer_type === "end") {
+      if (response_type === "end") {
         messageContentElement.style.backgroundColor = "#4CAF50"; // Green color for end message
         messageContentElement.style.color = "#ffffff"; // White text color
+        messageContainer.style.display = "none";
+      }
+
+      //If response type is error recall the intialsurvey
+      if (response_type === "error") {
+        initializeSurvey();
+        return; // Stop appending the message
       }
 
       messageElement.appendChild(avatarElement);
       messageElement.appendChild(messageContentElement);
+
+      // Remove existing skip buttons (if any)
+      const existingSkipButtons = chatMessages.querySelectorAll(".skip-button");
+      existingSkipButtons.forEach(button => button.remove());
+
+      // Add Skip Button (conditionally)
+      if (!isUser && !isLoading && response_type !== "end") {
+        const skipButton = document.createElement("button");
+        skipButton.textContent = "Skip";
+        skipButton.classList.add("skip-button");
+        skipButton.style.color = "#034b83";
+        skipButton.style.cursor = "pointer";
+
+        skipButton.addEventListener("click", handleSkipClick);
+
+        // Create a container for the message and the skip button
+        const messageContainer = document.createElement("div");
+        messageContainer.classList.add("message-container");
+
+        // Append message content and skip button to the message container
+        messageContainer.appendChild(messageContentElement);
+        messageContainer.appendChild(skipButton);
+
+        // Clear the messageElement content and append the message container
+        messageElement.innerHTML = '';  // Clear existing content (avatar)
+        messageElement.appendChild(avatarElement); // Re-add the avatar
+        messageElement.appendChild(messageContainer);
+      }
 
       chatMessages.appendChild(messageElement);
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -460,20 +518,32 @@ const initializeChatWidget = () => {
         survey_session_id = data.data?.survey_session;
 
         if (data) {
-          const aiMessages = document.querySelectorAll(".chat-message.ai");
+          const aiMessages = document
+            .querySelectorAll(".chat-message.ai");
           if (aiMessages.length > 0) {
             aiMessages[aiMessages.length - 1].remove(); // Remove the last AI message
           }
 
-          data.data.response?.forEach((item) => {
-            appendMessage(item, false, false, data.data.answer_type);
-          });
+
+          // data?.data?.response_type = "error"
+          if (data.data?.response_type === "error") {
+            alert(data?.data?.response)
+            clearChatMessages(); // Clear all previous messages
+            appendMessage("An error occurred. Restarting assessment...", false, false, data?.data?.response_type); // Append an error message
+            return;
+          }
         }
+
+         data.data.response?.forEach((item) => {
+            appendMessage(item, false, false, data.data.response_type);
+          });
+
       } catch (error) {
         console.error("Error fetching AI response:", error);
 
         // Remove loading animation in case of error: also remove the *last* AI message.
-        const aiMessages = document.querySelectorAll(".chat-message.ai");
+        const aiMessages = document
+          .querySelectorAll(".chat-message.ai");
         if (aiMessages.length > 0) {
           aiMessages[aiMessages.length - 1].remove(); // Remove the last AI message
         }
@@ -481,6 +551,57 @@ const initializeChatWidget = () => {
         appendMessage("Sorry, something went wrong. Please try again.", false);
       }
     });
+
+    // Function to handle skip click
+    const handleSkipClick = async () => {
+      //      // Append "Skipped" as a user message (you can customize this)
+      appendMessage("Skipped", true);
+
+      // Show loading animation
+      appendMessage("", false, true);
+
+      try {
+        const response = await fetch(
+          "https://9yrts99ryd.execute-api.us-east-1.amazonaws.com/dev",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              "action": "skip_question",
+              "survey_session": survey_session_id,
+            }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (data) {
+          survey_session_id = data.data?.survey_session;
+
+          // Remove loading animation
+          const aiMessages = document
+            .querySelectorAll(".chat-message.ai");
+          if (aiMessages.length > 0) {
+            aiMessages[aiMessages.length - 1].remove();
+          }
+
+          data.data.response?.forEach((item) => {
+            appendMessage(item, false, false, data.data.response_type);
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching AI response (skip):", error);
+
+        // Remove loading animation in case of error
+        const aiMessages = document
+          .querySelectorAll(".chat-message.ai");
+        if (aiMessages.length > 0) {
+          aiMessages[aiMessages.length - 1].remove();
+        }
+
+        appendMessage("Sorry, something went wrong skipping. Please try again.", false);
+      }
+    };
 
     // Function to initialize survey
     const initializeSurvey = async () => {
@@ -505,7 +626,15 @@ const initializeChatWidget = () => {
 
         survey_session_id = data.data?.survey_session;
 
-        const aiMessages = document.querySelectorAll(".chat-message.ai");
+        //If response type is error recall the intialsurvey
+        if (data.data?.answer_type === "error") {
+          clearChatMessages(); // Clear all previous messages
+          appendMessage("An error occurred. Restarting assessment...", false, false, "error"); // Append an error message
+          return;
+        }
+
+        const aiMessages = document
+          .querySelectorAll(".chat-message.ai");
         if (aiMessages.length > 0) {
           aiMessages[aiMessages.length - 1].remove(); // Remove the last AI message
         }
@@ -514,13 +643,22 @@ const initializeChatWidget = () => {
       } catch (error) {
         console.error("Error initializing survey:", error);
 
-        const aiMessages = document.querySelectorAll(".chat-message.ai");
+        const aiMessages = document
+          .querySelectorAll(".chat-message.ai");
         if (aiMessages.length > 0) {
           aiMessages[aiMessages.length - 1].remove(); // Remove the last AI message
         }
 
         // Show error message in chat
         appendMessage("Failed to initialize survey. Please try again.", false);
+      }
+    };
+
+    // Function to clear all chat messages
+    const clearChatMessages = () => {
+      const chatMessagesElement = document.getElementById("chatMessages");
+      while (chatMessagesElement.firstChild) {
+        chatMessagesElement.removeChild(chatMessagesElement.firstChild);
       }
     };
   };
