@@ -22,11 +22,11 @@
         .getElementById("fb_widget_script")
         ?.getAttribute("fb_partner_id");
       console.log("Chat widget initialized!");
-     const defaultVideoURL = `https://d1jcbfcd9v1do3.cloudfront.net/${fb_partner_id}/videos/knowledge_base/f780670a/default/1_playlist.m3u8`;
+     const defaultVideoURL = `https://d1jcbfcd9v1do3.cloudfront.net/${fb_partner_id}/videos/knowledge_base/ee305956fc/default/1_playlist.m3u8`;
       let bgColor = "#034b83";
       let title = "AI assistant 24/7";
 
-      const askContactVideoUrl = `https://d1jcbfcd9v1do3.cloudfront.net/${fb_partner_id}/videos/knowledge_base/f780670a/contact/contact_playlist.m3u8`;
+      const askContactVideoUrl = `https://d1jcbfcd9v1do3.cloudfront.net/${fb_partner_id}/videos/knowledge_base/ee305956fc/contact/contact_playlist.m3u8`;
 
       const getInformationFromUser = 4;
 
