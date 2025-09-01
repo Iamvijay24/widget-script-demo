@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Record to base64 (webm)</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:24px;background:#f7f7fb;color:#111}
+    .card{background:white;border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(20,20,40,0.06);max-width:840px}
+    h1{margin:0 0 12px;font-size:20px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    button{padding:8px 12px;border-radius:8px;border:1px solid #e6e6ef;background:#fff;cursor:pointer}
+    button.primary{background:#111;color:#fff;border-color:transparent}
+    button:disabled{opacity:.5;cursor:not-allowed}
+    textarea{width:100%;height:200px;margin-top:12px;font-family:monospace;font-size:12px;padding:10px;border-radius:8px;border:1px solid #eaeaea;resize:vertical}
+    .small{font-size:13px;color:#555;margin-top:8px}
+    audio{display:block;margin-top:12px;width:100%}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Record your voice → convert to Base64 (WebM)</h1>
+    <div class="small">This page uses <code>MediaRecorder</code>. Use Chrome/Edge/Firefox on desktop or supported mobile browsers. Microphone permission required.</div>
+
+    <div class="controls">
+      <button id="btnStart" class="primary">Start Recording</button>
+      <button id="btnStop" disabled>Stop Recording</button>
+      <button id="btnPlay" disabled>Play</button>
+      <button id="btnCopy" disabled>Copy Base64</button>
+      <button id="btnClear">Clear</button>
+      <button id="btnDownload" disabled>Download .webm</button>
+    </div>
+
+    <audio id="player" controls hidden></audio>
+
+    <label for="base64Area" style="display:block;margin-top:12px;font-weight:600">Base64 (data URL)</label>
+    <textarea id="base64Area" placeholder="Base64 will appear here after you stop recording" readonly></textarea>
+  </div>
+
+  <script>
+    const btnStart = document.getElementById('btnStart');
+    const btnStop = document.getElementById('btnStop');
+    const btnPlay = document.getElementById('btnPlay');
+    const btnCopy = document.getElementById('btnCopy');
+    const btnClear = document.getElementById('btnClear');
+    const btnDownload = document.getElementById('btnDownload');
+    const base64Area = document.getElementById('base64Area');
+    const player = document.getElementById('player');
+
+    let mediaRecorder = null;
+    let chunks = [];
+    let recordedBlob = null;
+
+    function supportsMediaRecorder() {
+      return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+    }
+
+    async function startRecording(){
+      if(!supportsMediaRecorder()){
+        alert('MediaRecorder or getUserMedia is not supported in this browser.');
+        return;
+      }
+
+      try{
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // prefer explicit mime if supported
+        const mime = (() => {
+          if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) return 'audio/webm;codecs=opus';
+          if (MediaRecorder.isTypeSupported('audio/webm')) return 'audio/webm';
+          return '';
+        })();
+
+        mediaRecorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+        chunks = [];
+
+        mediaRecorder.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+        mediaRecorder.onstop = async () => {
+          recordedBlob = new Blob(chunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+
+          // show player
+          player.src = URL.createObjectURL(recordedBlob);
+          player.hidden = false;
+          btnPlay.disabled = false;
+          btnDownload.disabled = false;
+
+          // convert to base64 (data URL)
+          const dataUrl = await blobToDataURL(recordedBlob);
+          base64Area.value = dataUrl;
+          btnCopy.disabled = false;
+        };
+
+        mediaRecorder.start();
+        btnStart.disabled = true;
+        btnStop.disabled = false;
+        btnCopy.disabled = true;
+        base64Area.value = '';
+
+      } catch(err){
+        console.error(err);
+        alert('Could not start recording: ' + (err && err.message ? err.message : err));
+      }
+    }
+
+    function stopRecording(){
+      if(mediaRecorder && mediaRecorder.state !== 'inactive'){
+        mediaRecorder.stop();
+      }
+      btnStart.disabled = false;
+      btnStop.disabled = true;
+    }
+
+    function playRecorded(){
+      if(player.src) player.play();
+    }
+
+    function clearAll(){
+      chunks = [];
+      recordedBlob = null;
+      base64Area.value = '';
+      player.pause();
+      player.src = '';
+      player.hidden = true;
+      btnPlay.disabled = true;
+      btnCopy.disabled = true;
+      btnDownload.disabled = true;
+    }
+
+    function blobToDataURL(blob){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = e => reject(e);
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    async function copyBase64(){
+      const text = base64Area.value;
+      if(!text) return;
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          await navigator.clipboard.writeText(text);
+          alert('Base64 copied to clipboard');
+        } else {
+          // fallback
+          base64Area.select();
+          document.execCommand('copy');
+          alert('Base64 copied to clipboard (fallback)');
+        }
+      } catch(err){
+        console.error(err);
+        alert('Copy failed: ' + err);
+      }
+    }
+
+    function downloadWebM(){
+      if(!recordedBlob) return;
+      const a = document.createElement('a');
+      const url = URL.createObjectURL(recordedBlob);
+      a.href = url;
+      a.download = 'recording.webm';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    btnStart.addEventListener('click', startRecording);
+    btnStop.addEventListener('click', stopRecording);
+    btnPlay.addEventListener('click', playRecorded);
+    btnCopy.addEventListener('click', copyBase64);
+    btnClear.addEventListener('click', clearAll);
+    btnDownload.addEventListener('click', downloadWebM);
+
+    // accessibility: allow ctrl+enter to copy
+    base64Area.addEventListener('keydown', e => {
+      if((e.ctrlKey || e.metaKey) && e.key === 'Enter') copyBase64();
+    });
+  </script>
+</body>
+</html>
