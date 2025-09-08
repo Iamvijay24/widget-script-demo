@@ -2,23 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hands-Free Mic + Whisper API</title>
+  <title>Hands-Free Mic + Whisper API + Video</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; margin: 40px; }
     #log { margin-top: 20px; padding: 10px; border: 1px solid #ccc; max-height: 200px; overflow-y: auto; }
     button { padding: 10px 20px; font-size: 16px; margin: 10px; }
     .transcript { color: darkblue; font-weight: bold; }
+    video { margin-top: 20px; width: 480px; max-width: 100%; border: 1px solid #ccc; border-radius: 8px; }
   </style>
 </head>
 <body>
-  <h2>🎤 Hands-Free Mic with Whisper API</h2>
+  <h2>🎤 Hands-Free Mic + Whisper API + Video</h2>
   <button id="startBtn">Start Mic</button>
   <button id="stopBtn" disabled>Stop Mic</button>
   <div id="log"></div>
 
+  <!-- Hardcoded video -->
+  <video id="myVideo" src="sample-video.mp4" controls></video>
+
   <script>
     let recorder;
     let isRecording = false;
+    const video = document.getElementById("myVideo");
 
     function log(message) {
       const logDiv = document.getElementById("log");
@@ -35,7 +40,7 @@
       });
     }
 
-    document.getElementById("startBtn").onclick = async () => {
+    async function startMic() {
       if (isRecording) return;
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -45,7 +50,6 @@
         if (e.data.size > 0) {
           const base64 = await blobToBase64(e.data);
 
-          // Send to backend STT API
           fetch("http://localhost:3000/stt", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -58,26 +62,44 @@
             } else {
               log("⚠️ No text received");
             }
+            playVideoAndPauseMic();
           })
-          .catch(err => log("❌ Error: " + err.message));
+          .catch(err => {
+            log("❌ Error: " + err.message);
+            playVideoAndPauseMic();
+          });
         }
       };
 
-      recorder.start(3000); // every 3s
+      recorder.start(3000); // record every 3 seconds
       isRecording = true;
       log("✅ Mic started (hands-free mode)");
       document.getElementById("startBtn").disabled = true;
       document.getElementById("stopBtn").disabled = false;
-    };
+    }
 
-    document.getElementById("stopBtn").onclick = () => {
+    function stopMic() {
       if (!isRecording) return;
       recorder.stop();
       isRecording = false;
       log("🛑 Mic stopped");
       document.getElementById("startBtn").disabled = false;
       document.getElementById("stopBtn").disabled = true;
-    };
+    }
+
+    function playVideoAndPauseMic() {
+      stopMic(); // stop mic when video starts
+      video.play();
+    }
+
+    // When video ends, restart mic automatically
+    video.addEventListener("ended", () => {
+      log("▶️ Video ended, restarting mic...");
+      startMic();
+    });
+
+    document.getElementById("startBtn").onclick = startMic;
+    document.getElementById("stopBtn").onclick = stopMic;
   </script>
 </body>
 </html>
