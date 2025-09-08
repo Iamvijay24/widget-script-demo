@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hands-Free Mic Demo</title>
+  <title>Hands-Free Mic + Whisper API</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; margin: 40px; }
     #log { margin-top: 20px; padding: 10px; border: 1px solid #ccc; max-height: 200px; overflow-y: auto; }
     button { padding: 10px 20px; font-size: 16px; margin: 10px; }
+    .transcript { color: darkblue; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h2>🎤 Hands-Free Mic Demo (MediaRecorder)</h2>
+  <h2>🎤 Hands-Free Mic with Whisper API</h2>
   <button id="startBtn">Start Mic</button>
   <button id="stopBtn" disabled>Stop Mic</button>
   <div id="log"></div>
@@ -36,20 +37,35 @@
 
     document.getElementById("startBtn").onclick = async () => {
       if (isRecording) return;
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       recorder = new MediaRecorder(stream);
 
       recorder.ondataavailable = async (e) => {
         if (e.data.size > 0) {
           const base64 = await blobToBase64(e.data);
-          log("🎧 Captured chunk (Base64 length: " + base64.length + ")");
-          // 👉 here you would send base64 to your backend (Whisper / Google STT)
+
+          // Send to backend STT API
+          fetch("http://localhost:3000/stt", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ audio: base64 })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.text) {
+              log("<span class='transcript'>📝 " + data.text + "</span>");
+            } else {
+              log("⚠️ No text received");
+            }
+          })
+          .catch(err => log("❌ Error: " + err.message));
         }
       };
 
-      recorder.start(3000); // capture every 3 seconds
+      recorder.start(3000); // every 3s
       isRecording = true;
-      log("✅ Mic started (hands-free)");
+      log("✅ Mic started (hands-free mode)");
       document.getElementById("startBtn").disabled = true;
       document.getElementById("stopBtn").disabled = false;
     };
